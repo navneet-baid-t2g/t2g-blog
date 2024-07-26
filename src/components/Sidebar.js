@@ -35,7 +35,7 @@ const SearchBar = () => {
     const fetchResults = async (query) => {
         try {
             setLoading(true);
-            const response = await axios.get(`/api/search?query=${encodeURIComponent(query)}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search?query=${encodeURIComponent(query)}`);
             setResults(response.data.results);
         } catch (error) {
             setError('Error fetching search results.');

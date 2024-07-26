@@ -1,6 +1,6 @@
 // pages/api/comments.js
-import { connectToDatabase } from '../../lib/db';
-import { apiKeyAuthMiddleware } from '../../lib/auth';
+import { connectToDatabase } from '../../../lib/db';
+import { apiKeyAuthMiddleware } from '../../../lib/auth';
 
 const handler = async (req, res) => {
     const { method, query } = req;

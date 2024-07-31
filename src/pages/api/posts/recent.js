@@ -1,5 +1,6 @@
 // pages/api/posts.js
 import { connectToDatabase } from '../../../lib/db';
+import { getCache, setCache } from '../../../lib/cache';
 
 const handler = async (req, res) => {
     const { method } = req;
@@ -12,17 +13,24 @@ const handler = async (req, res) => {
         });
     }
 
+    // Create a unique cache key for the request
+    const cacheKey = 'top_posts:3';
     try {
+        // Check cache first
+        const cachedData = await getCache(cacheKey);
+        if (cachedData) {
+            return res.status(200).json(cachedData);
+        }
+
         const connection = await connectToDatabase();
 
-        // Query to fetch the top 3 most recent posts
+        // Fetch top 3 most recent posts
         const [rows] = await connection.execute(
-            `SELECT p.*, 
-                    pm.meta_value as thumbnail_id, 
+            `SELECT p.ID, p.post_author, p.post_date, p.post_content, p.post_title, p.post_excerpt, p.post_status, p.post_name,
                     t.guid as thumbnail_url,
                     u.display_name as author_name,
-                    GROUP_CONCAT(DISTINCT cat_terms.name) as categories,
-                    GROUP_CONCAT(DISTINCT tag_terms.name) as tags
+                    GROUP_CONCAT(DISTINCT cat_terms.name SEPARATOR ', ') as categories,
+                    GROUP_CONCAT(DISTINCT tag_terms.name SEPARATOR ', ') as tags
              FROM wp_posts p
              LEFT JOIN wp_postmeta pm ON p.ID = pm.post_id AND pm.meta_key = '_thumbnail_id'
              LEFT JOIN wp_posts t ON pm.meta_value = t.ID AND t.post_type = 'attachment'
@@ -36,19 +44,24 @@ const handler = async (req, res) => {
              WHERE p.post_type = 'post' AND p.post_status = 'publish'
              GROUP BY p.ID, p.post_title, p.post_content, p.post_date, pm.meta_value, t.guid, u.display_name
              ORDER BY p.post_date DESC
-             LIMIT 3`  // Always fetch the top 3 posts
+             LIMIT 3`
         );
 
-        await connection.end();
-
-        res.status(200).json({
+        const response = {
             success: true,
             status: 200,
             data: {
                 posts: rows,
             },
-        });
+        };
+
+        // Cache the response data
+        setCache(cacheKey, response);
+
+        res.status(200).json(response);
+
     } catch (error) {
+        console.error('Database query failed:', error); // Log error details
         res.status(500).json({
             success: false,
             status: 500,

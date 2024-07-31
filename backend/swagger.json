@@ -1,0 +1,36 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Tech2Globe Blogs API",
+    "description": "This API provides comprehensive access to manage blog posts, authors, tags, and categories for the Tech2Globe blogging platform.\n\n**Important:** ⚠️ This API is intended for use by Tech2Globe employees and authorized partners 🔐 only. Unauthorized use is strictly prohibited.",
+    "contact": {
+      "name": "Developer",
+      "email": "navneet.baid@tech2globe.in"
+    }
+  },
+  "host": "localhost:5000",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "tags": [
+    {
+      "name": "Posts",
+      "description": "Operations related to blog posts"
+    },
+    {
+      "name": "Authors",
+      "description": "Operations related to authors"
+    },
+    {
+      "name": "Tags",
+      "description": "Operations related to tags"
+    },
+    {
+      "name": "Categories",
+      "description": "Operations related to categories"
+    }
+  ],
+  "paths": {}
+}

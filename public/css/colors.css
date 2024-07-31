@@ -85,13 +85,13 @@ a:focus,
 .navbar-nav .nav-link.active.color-green-hover,
 .navbar-nav .nav-link.color-green-hover:hover,
 .navbar-nav .nav-link.color-green-hover:focus {
-    color: #34bf49 !important;
+    color: #141E46 !important;
 }
 
 .page-title .bg-green,
 .masonry-box:hover .blog-meta span.bg-green,
 .color-green a {
-    background-color: #34bf49 !important;
+    background-color: #141E46 !important;
 }
 
 .navbar-nav .nav-link.active.color-red-hover,

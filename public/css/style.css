@@ -1743,3 +1743,6 @@ hr.invis3 {
     width: 100%;
     height: auto;
 }
+li.page-item.active a.page-link{
+    background-color: #00B6F1 !important;
+}

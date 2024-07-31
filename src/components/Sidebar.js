@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 import { format } from 'date-fns';
-
+import Image from 'next/image';
 const Sidebar = ({ components, categories, recentPostsData }) => {
     // Component mapping
     const componentMap = {
@@ -35,7 +35,7 @@ const SearchBar = () => {
     const fetchResults = async (query) => {
         try {
             setLoading(true);
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search?query=${encodeURIComponent(query)}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/posts/search?query=${encodeURIComponent(query)}`);
             setResults(response.data.results);
         } catch (error) {
             setError('Error fetching search results.');
@@ -48,7 +48,7 @@ const SearchBar = () => {
     // Debounced version of fetchResults
     const debouncedFetchResults = useCallback(debounce((query) => {
         fetchResults(query);
-    }, 200), []);
+    }, 800), []);
 
     // Fetch results on query change
     useEffect(() => {
@@ -97,7 +97,7 @@ const SearchBar = () => {
                     <ul>
                         {results.map((result) => (
                             <li key={result.ID}>
-                                <a href={`/blog/${result.slug}`}>
+                                <a href={`/${result.slug}`}>
                                     {result.post_title}
                                 </a>
                             </li>
@@ -121,9 +121,9 @@ const RecentPosts = ({ recentPostsData }) => {
                     <div className="list-group">
                         {
                             recentPostsData.data.posts.map((post) => (
-                                <a key={post.ID} href={`/blog/${post.post_name}`} className="list-group-item list-group-item-action flex-column align-items-start">
+                                <a key={post.ID} href={`/${post.post_name}`} className="list-group-item list-group-item-action flex-column align-items-start">
                                     <div className="w-100 justify-content-between">
-                                        <img src={post.thumbnail_url} alt className="img-fluid float-left" />
+                                        {post.thumbnail_url != "" && <Image src={post.thumbnail_url} alt={post.post_title} width={100} height={80} className="img-fluid float-left" />}
                                         <h6 className="mb-0 truncate-2-lines">{post.post_title}</h6>
                                         <small>{format(new Date(post.post_date), 'MMMM d, yyyy')}</small>
                                     </div>
@@ -184,13 +184,16 @@ const PopularCategories = ({ categories }) => {
             <h2 className="widget-title">Popular Categories</h2>
             <div className="link-widget">
                 <ul>
-                    {categories && categories.map((category) => (
-                        <li key={category.id}>
-                            <a href={`#${category.slug}`}>
-                                {category.name} <span>({category.post_count})</span>
-                            </a>
-                        </li>
-                    ))}
+                    {categories && categories
+                        .filter(category => category.post_count >= 1)
+                        .map(category => (
+                            <li key={category.id}>
+                                <a href={`/category/${category.slug}`}>
+                                    {category.name} <span>({category.post_count})</span>
+                                </a>
+                            </li>
+                        ))}
+
                 </ul>
             </div>
         </div>

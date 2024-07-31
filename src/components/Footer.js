@@ -1,3 +1,4 @@
+import Image from "next/image";
 const Footer = () => {
     return (
         <>
@@ -7,14 +8,21 @@ const Footer = () => {
                         <div className="col-lg-8 offset-lg-2">
                             <div className="widget">
                                 <div className="footer-text text-center">
-                                    <a href="index.html"><img src="../images/version/garden-footer-logo.png" alt className="img-fluid" /></a>
-                                    <p>Forest Time is a personal blog for handcrafted, cameramade photography content, fashion styles from independent creatives around the world.</p>
+                                    <a href="/">
+                                        <Image
+                                            src="/images/version/garden-footer-logo.png"
+                                            alt="Garden Footer Logo"
+                                            className="img-fluid"
+                                            width={256} 
+                                            height={85} 
+                                        />
+                                    </a>                                    <p>Forest Time is a personal blog for handcrafted, cameramade photography content, fashion styles from independent creatives around the world.</p>
                                     <div className="social">
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i className="fa fa-facebook" /></a>
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i className="fa fa-twitter" /></a>
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i className="fa fa-instagram" /></a>
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google Plus"><i className="fa fa-google-plus" /></a>
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i className="fa fa-pinterest" /></a>
+                                        <a href="https://www.facebook.com/tech2globe.software" data-toggle="tooltip" data-placement="bottom" title="Facebook" data-animation="false"><i className="fa fa-facebook" /></a>
+                                        <a href="https://twitter.com/Tech2Globe" data-toggle="tooltip" data-placement="bottom" title="Twitter" data-animation="false"><i className="fa fa-twitter" /></a>
+                                        <a href="https://www.instagram.com/tech2globeweb/" data-toggle="tooltip" data-placement="bottom" title="Instagram" data-animation="false"><i className="fa fa-instagram" /></a>
+                                        <a href="https://www.youtube.com/user/Tech2Globe" data-toggle="tooltip" data-placement="bottom" title="Youtube" data-animation="false"><i className="fa fa-youtube" /></a>
+                                        <a href="https://www.linkedin.com/company/tech2globe" data-toggle="tooltip" data-placement="bottom" title="Linkedin" data-animation="false"><i className="fa fa-linkedin" /></a>
                                     </div>
                                     <hr className="invis" />
                                     <div className="newsletter-widget text-center">
@@ -31,7 +39,7 @@ const Footer = () => {
                         <div className="col-md-12 text-center">
                             <br />
                             <br />
-                            <div className="copyright">© Forest Time. Design: <a href="http://html.design">HTML Design</a>.</div>
+                            <div className="copyright">© Copyright 2024 | All Rights Reserved by Tech2Globe.</div>
                         </div>
                     </div>
                 </div>{/* end container */}

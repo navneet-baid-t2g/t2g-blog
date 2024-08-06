@@ -129,7 +129,7 @@ const BlogList = ({ posts, pagination, onPageChange, loading }) => {
                             <Image
                               src={post.thumbnail_url}
                               alt={post.post_title}
-                              layout="responsive"
+                              // layout="responsive"
                               width={0} 
                               height={0}
                               className="img-fluid"

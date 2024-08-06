@@ -36,7 +36,7 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
+app.use('/api/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
     customCss: `
         .swagger-ui .topbar { display: none }
         .swagger-ui .info { font-family: Arial, sans-serif; }
@@ -48,6 +48,33 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
     docExpansion: 'none',
     displayRequestDuration: true,
 }));
+
+// Health check endpoint
+app.get('/api/health', async (req, res) => {
+    const healthDetails = {
+        status: 'UP',
+        uptime: process.uptime(),
+        timestamp: Date.now(),
+        memoryUsage: process.memoryUsage(),
+        system: {
+            loadAverage: os.loadavg(),
+            freeMemory: os.freemem(),
+            totalMemory: os.totalmem(),
+            cpus: os.cpus().length,
+        },
+    };
+
+    try {
+        // Check database connection
+        await db.getConnection();
+        healthDetails.database = 'UP';
+    } catch (err) {
+        healthDetails.database = 'DOWN';
+        healthDetails.dbError = err.message;
+    }
+
+    res.status(200).json(healthDetails);
+});
 
 // Use routes
 app.use('/api/posts', postsRoutes);
